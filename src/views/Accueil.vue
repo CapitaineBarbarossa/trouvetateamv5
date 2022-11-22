@@ -1,81 +1,63 @@
 <template>
-    <div class="app">
-        <carousel >
-            <carousel-slide v-for="slide in slides" :key="slide" class="carousel-slider">
-                <img :src="slide" :alt="slide">
-            </carousel-slide>
-        </carousel>
-    </div>    
+  <div class="home">
+    <!--<img alt="Vue logo" src="../assets/logo.png">-->
+    <Carousel />
+    <div class="container marketing">    
+        <div class="row">
+            <Detail v-for="(detail,index) in details" :key="index" :id="detail.id" :titre="detail.titre" :image="detail.image"  />
+        </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import Carousel from '@/components/Carousel.vue';
-import CarouselSlide from '@/components/CarouselSlide.vue';
+// @ is an alias to /src
+import Carousel from '@/components/Carousel.vue'
+import axios from 'axios'
 
 export default {
-    data(){
+  name: 'Accueil',
+  components: {
+    Carousel,
+  },
+  /*data(){
         return {
-            slides: [
-            <img src="@/assets/among_us.jpg" />,
-            ]
+            details:[
+                {
+                  titre:'Gîte',
+                  image:'gite.png',
+                },
+                {
+                  titre:'Randonnée',
+                  image:'randonnee.png',
+                },
+                {
+                  titre:'Ski',
+                  image:'ski.png',
+                },
+            ],
         }
-    },
-
-    components : {
-        Carousel : Carousel,
-        CarouselSlide : CarouselSlide,
-    }
+    },*/
+  data(){
+        return {
+            details:[],
+            errors: []
+        }
+  },
+  // Fetches Details when the component is created.
+  created() {
+    // axios.get(`https://localhost:8000/api/details.jsonld`)
+    // axios.get(`https://localhost:8000/api/details`)    
+    // axios.get(`http://localhost:8081/details2.json`)
+    axios.get(`http://localhost:8080/games.json`)
+    .then(response => {
+      // JSON responses are automatically parsed.
+      // this.details = response.data['hydra:member'] // fonctionne avec l'api
+      this.games = response.data.games
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+  }  
 }
 </script>
-
-<style>
-    .app {
-        display:flex;
-        justify-content: center;
-    }
-    .carousel {
-        position:relative;
-        overflow: hidden;
-        width:800px;
-        height:500px;
-        z-index:10;
-    }
-    .btn {
-        padding:5px 10px;
-        background-color:rgba(0,0,0,0.5);
-        border:1px solid transparent;
-        margin:5px 10px;
-        color:#FFF;
-        height:50px;
-        width:50px;
-        position:absolute;
-        margin-top:-25px;
-        z-index:2;
-    }
-    .btn:hover {
-        cursor: pointer;
-    }
-    .btn:focus{
-        outline:none;
-    }
-    .btn-next {
-        top:50%;
-        right:0;
-    }
-    .btn-prev {
-        top:50%;
-        left:0;
-    }
-    .carousel-slider {
-        position:absolute;
-        top:0;
-        left:0;
-        bottom:0;
-        right:0;
-    }
-    .carousel-slider img {
-        width:100%;
-        height:100%;
-    }
-
-</style>

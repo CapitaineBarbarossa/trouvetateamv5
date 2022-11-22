@@ -4,10 +4,9 @@ import Accueil from '../views/Accueil.vue'
 const routes = [
   {
     path: '/',
-    name: 'acceuil',
+    name: 'Accueil',
     component: Accueil
   },
-
 ]
 
 const router = createRouter({
