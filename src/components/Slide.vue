@@ -16,7 +16,6 @@ export default {
   name: 'Slides',
   props: {
     id: Number,
-    titre:String,
     image:String,
   }
 }

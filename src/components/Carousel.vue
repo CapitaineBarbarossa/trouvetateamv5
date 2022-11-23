@@ -21,7 +21,7 @@
             </div>
             </div> -->
 
-            <Slide v-for="(slide,index) in slides" :key="index" :id="slide.id" :titre="slide.titre" :image="slide.image"  />
+            <Slide v-for="(game,index) in games" :key="index" :id="game.id" :image="game.image"  />
             
             <!-- <div class="carousel-item">
             <img src="@/assets/montagne4.jpg" class="d-block w-100" alt="...">
@@ -44,6 +44,8 @@
 
 <script>
 import Slide from '@/components/Slide.vue'
+import axios from 'axios'
+
 
 export default {
     name: 'Carousel',
@@ -55,25 +57,25 @@ export default {
     },
     data(){
         return {
-            slides:[
-                {
-                    id:1,
-                    titre:'First slide label',
-                    image:'among_us.jpg',
-                },
-                {
-                    id:2,
-                    titre:'Second slide label',
-                    image:'apex.jpg',
-                },
-                {
-                    id:3,
-                    titre:'Third slide label',
-                    image:'fall_guy.jpg',
-                },
-            ],
+            games:[],
+            errors: []
         }
     },
+  // Fetches Details when the component is created.
+    created() {
+    // axios.get(`https://localhost:8000/api/details.jsonld`)
+    // axios.get(`https://localhost:8000/api/details`)    
+    // axios.get(`http://localhost:8081/details2.json`)
+    axios.get(`http://localhost:8080/games.json`)
+    .then(response => {
+      // JSON responses are automatically parsed.
+      // this.details = response.data['hydra:member'] // fonctionne avec l'api
+      this.games = response.data.games
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+  }
 }
 </script>
 
